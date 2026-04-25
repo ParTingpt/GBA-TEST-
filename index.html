@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>儿童注意力与冲动控制游戏化筛查</title>
+  <style>
+    :root { --bg:#f5f7fb; --card:#fff; --primary:#2563eb; --text:#172033; --muted:#65728a; --ok:#16a34a; --warn:#d97706; --bad:#dc2626; --line:#e5e7eb; }
+    *{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",Arial,sans-serif;background:linear-gradient(180deg,#eef4ff,#f8fafc);color:var(--text)}
+    .wrap{max-width:980px;margin:0 auto;padding:28px 16px 60px}.card{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:20px;box-shadow:0 12px 36px rgba(15,23,42,.08);padding:26px;margin:18px 0}.hero{text-align:center;padding:42px 28px}.hero h1{font-size:34px;margin:0 0 12px}.hero p{color:var(--muted);font-size:17px;line-height:1.8}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.field label{display:block;font-weight:700;margin:0 0 7px}.field input,.field select{width:100%;height:44px;border:1px solid #cfd6e3;border-radius:12px;padding:0 12px;font-size:15px;background:#fff}.btn{border:0;border-radius:14px;padding:13px 22px;font-weight:800;font-size:16px;background:var(--primary);color:#fff;cursor:pointer;box-shadow:0 8px 16px rgba(37,99,235,.18)}.btn.secondary{background:#0f172a}.btn.ghost{background:#fff;color:var(--primary);border:1px solid #bfdbfe;box-shadow:none}.btn:disabled{opacity:.55;cursor:not-allowed}.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.hidden{display:none!important}.note{background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;padding:14px;border-radius:14px;line-height:1.7}.danger-note{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;padding:14px;border-radius:14px;line-height:1.7}.game-area{position:relative;height:520px;border-radius:22px;overflow:hidden;background:linear-gradient(180deg,#dcfce7,#bbf7d0);border:2px solid #86efac;margin-top:18px;user-select:none}.space{background:radial-gradient(circle at top,#1e3a8a,#020617 70%);border-color:#334155}.stimulus{position:absolute;display:flex;align-items:center;justify-content:center;border-radius:999px;background:#fff;box-shadow:0 10px 24px rgba(15,23,42,.22);font-size:42px;cursor:pointer;transition:transform .08s}.stimulus:active{transform:scale(.92)}.hud{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:14px 0;color:var(--muted);font-weight:700}.progress{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden;flex:1}.bar{height:100%;width:0;background:var(--primary);transition:width .2s}.pill{display:inline-flex;align-items:center;border-radius:999px;padding:6px 11px;font-weight:800;font-size:13px}.low{background:#dcfce7;color:#166534}.mid{background:#fef3c7;color:#92400e}.high{background:#fee2e2;color:#991b1b}.table{width:100%;border-collapse:collapse;margin-top:12px}.table th,.table td{border-bottom:1px solid var(--line);padding:12px;text-align:left}.table th{background:#f8fafc}.report h2{margin-top:0}.metric{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.metric div{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:12px}.metric b{display:block;font-size:22px;margin-top:6px}.center{text-align:center}.feedback{font-size:22px;font-weight:900;text-align:center;min-height:36px;margin-top:12px}.footer-tip{color:var(--muted);font-size:13px;line-height:1.6}@media(max-width:720px){.grid,.metric{grid-template-columns:1fr}.game-area{height:420px}.hero h1{font-size:26px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section id="page-home" class="card hero">
+      <h1>儿童注意力与冲动控制游戏化筛查</h1>
+      <p>通过“森林寻宝”和“太空刹车”两个小游戏，记录儿童的点击正确率、漏选、误选、反应时间和反应稳定性，生成低/中/高风险的初步筛查结果。</p>
+      <div class="note">本工具仅用于筛查和试测，不作为临床诊断依据。正式解释应结合家长反馈、教师观察及专业测评。</div><br />
+      <button class="btn" onclick="showPage('info')">开始测评</button>
+    </section>
+
+    <section id="page-info" class="card hidden">
+      <h2>一、填写基本信息</h2>
+      <div class="grid">
+        <div class="field"><label>儿童姓名/昵称</label><input id="name" placeholder="例如：小明" /></div>
+        <div class="field"><label>性别</label><select id="gender"><option value="男">男</option><option value="女">女</option></select></div>
+        <div class="field"><label>出生日期</label><input id="birth" type="date" /></div>
+        <div class="field"><label>年级</label><select id="grade"><option>一年级</option><option>二年级</option><option>三年级</option><option>四年级</option><option>五年级</option><option>六年级</option></select></div>
+        <div class="field"><label>是否由家长协助</label><select id="assisted"><option value="否">否</option><option value="是">是</option></select></div>
+      </div><br />
+      <button class="btn" onclick="saveInfo()">下一步</button>
+    </section>
+
+    <section id="page-instruction" class="card hidden">
+      <h2>二、测评说明</h2>
+      <div class="note">接下来你会完成两个小游戏。游戏里有些任务需要你又快又准确地点击目标，也有些任务需要你看到某些东西时忍住不要点。有些题目可能比较简单，有些可能比较难。请你认真看清楚规则，尽量按照要求完成。这不是考试，不用紧张，尽力完成就可以。</div><br />
+      <button class="btn" onclick="startForestPractice()">我准备好了，开始游戏</button>
+    </section>
+
+    <section id="page-game" class="card hidden">
+      <h2 id="game-title"></h2>
+      <div id="game-rule" class="note"></div>
+      <div class="hud"><span id="game-status"></span><div class="progress"><div id="progress-bar" class="bar"></div></div><span id="timer"></span></div>
+      <div id="game-area" class="game-area"></div>
+      <div id="feedback" class="feedback"></div>
+    </section>
+
+    <section id="page-report" class="card report hidden">
+      <h2>儿童注意力与冲动控制游戏化筛查报告</h2>
+      <div id="basic-report"></div>
+      <div id="risk-report"></div>
+      <h3>核心指标</h3>
+      <div id="metrics" class="metric"></div>
+      <h3>分任务结果</h3>
+      <table class="table"><thead><tr><th>任务</th><th>风险等级</th><th>关键结果</th></tr></thead><tbody id="task-table"></tbody></table>
+      <h3>解释与建议</h3>
+      <div id="suggestion" class="danger-note"></div><br />
+      <div class="row"><button class="btn" onclick="downloadCSV()">导出 CSV 原始数据</button><button class="btn secondary" onclick="downloadJSON()">导出 JSON 完整结果</button><button class="btn ghost" onclick="location.reload()">重新测评</button></div>
+      <p class="footer-tip">说明：当前版本使用规则阈值判断风险等级，尚未建立常模。后续可基于 trial 级原始数据建立年龄常模、信效度证据和预测模型。</p>
+    </section>
+  </div>
+
+<script>
+const state={info:{},trials:[],results:{},current:null,practiceFlags:{forest:false,space:false}};
+const animals=["🦊","🐰","🐦","🐻","🦌","🐿️"]; const ships={go:"🟢🚀",nogo:"🔴🚀"};
+function showPage(name){["home","info","instruction","game","report"].forEach(p=>document.getElementById('page-'+p).classList.add('hidden'));document.getElementById('page-'+name).classList.remove('hidden')}
+function saveInfo(){const name=document.getElementById('name').value.trim();const birth=document.getElementById('birth').value;if(!name||!birth){alert('请填写儿童姓名/昵称和出生日期');return}state.info={name,gender:gender.value,birth,grade:grade.value,assisted:assisted.value,date:new Date().toLocaleString(),device:getDevice(),age:calcAge(birth)};showPage('instruction')}
+function getDevice(){const w=innerWidth;if(w<760)return '手机/小屏设备'; if(w<1100)return '平板/中屏设备'; return '电脑/大屏设备'}
+function calcAge(b){const d=new Date(b),n=new Date();let y=n.getFullYear()-d.getFullYear(),m=n.getMonth()-d.getMonth();if(m<0||(m===0&&n.getDate()<d.getDate()))y--;return y+'岁'}
+function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min} function mean(a){return a.length?a.reduce((x,y)=>x+y,0)/a.length:0} function sd(a){if(a.length<2)return 0;const m=mean(a);return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-1))} function pct(x){return (isFinite(x)?x:0).toFixed(1)+'%'}
+function setGame(title,rule,isSpace=false){showPage('game');document.getElementById('game-title').textContent=title;document.getElementById('game-rule').textContent=rule;const area=document.getElementById('game-area');area.innerHTML='';area.className='game-area'+(isSpace?' space':'');feedback.textContent='';progress(0)}
+function progress(v){document.getElementById('progress-bar').style.width=Math.max(0,Math.min(100,v))+'%'}
+function flash(msg,ok=true){feedback.textContent=msg;feedback.style.color=ok?'#16a34a':'#dc2626'}
+function spawn(content, size=78){const area=document.getElementById('game-area');const el=document.createElement('div');el.className='stimulus';el.textContent=content;el.style.width=size+'px';el.style.height=size+'px';el.style.left=rand(8,Math.max(8,area.clientWidth-size-8))+'px';el.style.top=rand(8,Math.max(8,area.clientHeight-size-8))+'px';area.appendChild(el);return el}
+async function runTrials(config){const {game,practice,total,interval,showMs,makeStim,onFinish,feedbackOn}=config;for(let i=0;i<total;i++){progress(i/total*100);gameStatus.textContent=practice?'练习阶段':'正式测评';timer.textContent=(i+1)+' / '+total;const stim=makeStim(i);const appeared=performance.now();let clicked=false;let rt=null;const el=spawn(stim.label,stim.size||78);el.onclick=()=>{if(clicked)return;clicked=true;rt=performance.now()-appeared;el.remove();const correct=stim.shouldClick;if(feedbackOn)flash(correct?'真棒，答对了！':'注意哦，这个不能点。',correct);state.trials.push({trial_id:state.trials.length+1,game,phase:practice?'practice':'formal',stimulus_type:stim.type,stimulus_label:stim.label,response:'click',correct,reaction_time_ms:Math.round(rt),timestamp:new Date().toISOString()});};await wait(showMs);if(!clicked){el.remove();const correct=!stim.shouldClick;if(feedbackOn)flash(correct?'真棒，忍住没有点！':'注意哦，看到目标要点击。',correct);state.trials.push({trial_id:state.trials.length+1,game,phase:practice?'practice':'formal',stimulus_type:stim.type,stimulus_label:stim.label,response:'no_click',correct,reaction_time_ms:'',timestamp:new Date().toISOString()});}await wait(interval)}progress(100);await wait(500);onFinish&&onFinish()}
+function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+function startForestPractice(){setGame('森林寻宝：练习','请只点击小狐狸 🦊，看到其他小动物不要点。练习阶段会给你反馈。');let seq=[...Array(5).fill('target'),...Array(5).fill('distractor')].sort(()=>Math.random()-.5);runTrials({game:'forest',practice:true,total:10,showMs:1200,interval:350,feedbackOn:true,makeStim:i=>{const type=seq[i];return type==='target'?{type,label:'🦊',shouldClick:true}:{type,label:animals[rand(1,animals.length-1)],shouldClick:false}},onFinish:()=>{const recent=state.trials.filter(t=>t.game==='forest'&&t.phase==='practice').slice(-10);const acc=recent.filter(t=>t.correct).length/recent.length;if(acc>=.7||state.practiceFlags.forest){startForestFormal()}else{state.practiceFlags.forest=true;alert('我们再练习一次。记住：只点小狐狸。');startForestPractice()}}})}
+function startForestFormal(){setGame('森林寻宝：正式测评','请只点击小狐狸 🦊，看到其他小动物不要点。正式测评没有对错反馈。');let types=[...Array(27).fill('target'),...Array(63).fill('distractor')].sort(()=>Math.random()-.5);runTrials({game:'forest',practice:false,total:90,showMs:1000,interval:250,feedbackOn:false,makeStim:i=>{const type=types[i];return type==='target'?{type,label:'🦊',shouldClick:true}:{type,label:animals[rand(1,animals.length-1)],shouldClick:false}},onFinish:startSpacePractice})}
+function startSpacePractice(){setGame('太空刹车：练习','看到绿色飞船 🟢🚀 要点击；看到红色飞船 🔴🚀 不能点击。练习阶段会给你反馈。',true);let seq=[...Array(8).fill('go'),...Array(4).fill('nogo')].sort(()=>Math.random()-.5);runTrials({game:'space',practice:true,total:12,showMs:1000,interval:350,feedbackOn:true,makeStim:i=>{const type=seq[i];return type==='go'?{type,label:ships.go,shouldClick:true,size:92}:{type,label:ships.nogo,shouldClick:false,size:92}},onFinish:()=>{const recent=state.trials.filter(t=>t.game==='space'&&t.phase==='practice').slice(-12);const acc=recent.filter(t=>t.correct).length/recent.length;if(acc>=.7||state.practiceFlags.space){startSpaceFormal()}else{state.practiceFlags.space=true;alert('我们再练习一次。记住：绿色点，红色不点。');startSpacePractice()}}})}
+function startSpaceFormal(){setGame('太空刹车：正式测评','看到绿色飞船 🟢🚀 要点击；看到红色飞船 🔴🚀 不能点击。正式测评没有对错反馈。',true);let types=[...Array(90).fill('go'),...Array(30).fill('nogo')].sort(()=>Math.random()-.5);runTrials({game:'space',practice:false,total:120,showMs:800,interval:200,feedbackOn:false,makeStim:i=>{const type=types[i];return type==='go'?{type,label:ships.go,shouldClick:true,size:92}:{type,label:ships.nogo,shouldClick:false,size:92}},onFinish:finish})}
+function formal(game){return state.trials.filter(t=>t.game===game&&t.phase==='formal')} function riskClass(r){return r==='低风险'?'low':r==='中风险'?'mid':'high'}
+function forestResult(){const t=formal('forest'),target=t.filter(x=>x.stimulus_type==='target'),dist=t.filter(x=>x.stimulus_type==='distractor');const hit=target.filter(x=>x.response==='click').length,miss=target.length-hit,fa=dist.filter(x=>x.response==='click').length,cr=dist.length-fa;const rt=target.filter(x=>x.response==='click').map(x=>+x.reaction_time_ms);const first=t.slice(0,45),second=t.slice(45);const acc=a=>a.filter(x=>x.correct).length/a.length*100;const correctRate=hit/target.length*100,falseRate=fa/dist.length*100,decline=acc(first)-acc(second);let risk='低风险';if(correctRate<60||falseRate>30)risk='高风险';else if(correctRate<80||falseRate>15||decline>=20)risk='中风险';return{target_total:target.length,distractor_total:dist.length,hit_count:hit,miss_count:miss,false_alarm_count:fa,correct_rejection_count:cr,accuracy:correctRate,miss_rate:miss/target.length*100,false_alarm_rate:falseRate,mean_reaction_time:mean(rt),reaction_time_sd:sd(rt),first_half_accuracy:acc(first),second_half_accuracy:acc(second),attention_decline:decline,risk}}
+function spaceResult(){const t=formal('space'),go=t.filter(x=>x.stimulus_type==='go'),nogo=t.filter(x=>x.stimulus_type==='nogo');const hit=go.filter(x=>x.response==='click').length,miss=go.length-hit,err=nogo.filter(x=>x.response==='click').length,cor=nogo.length-err;const rt=go.filter(x=>x.response==='click').map(x=>+x.reaction_time_ms);const goAcc=hit/go.length*100,nogoErr=err/nogo.length*100;let risk='低风险';if(nogoErr>30||goAcc<60)risk='高风险';else if(nogoErr>15||goAcc<80)risk='中风险';return{go_total:go.length,nogo_total:nogo.length,go_hit_count:hit,go_miss_count:miss,nogo_correct_count:cor,nogo_error_count:err,go_accuracy:goAcc,inhibition_error_rate:nogoErr,inhibition_control:100-nogoErr,mean_go_reaction_time:mean(rt),reaction_time_sd:sd(rt),risk}}
+function finish(){state.results.forest=forestResult();state.results.space=spaceResult();const risks=[state.results.forest.risk,state.results.space.risk];state.results.overall=risks.includes('高风险')?'高风险':risks.includes('中风险')?'中风险':'低风险';renderReport();showPage('report')}
+function renderReport(){const f=state.results.forest,s=state.results.space,o=state.results.overall;basicReport.innerHTML=`<p><b>姓名/昵称：</b>${state.info.name}　<b>性别：</b>${state.info.gender}　<b>年龄：</b>${state.info.age}　<b>年级：</b>${state.info.grade}</p><p><b>测评日期：</b>${state.info.date}　<b>设备：</b>${state.info.device}　<b>家长协助：</b>${state.info.assisted}</p>`;riskReport.innerHTML=`<h3>总体结果：<span class="pill ${riskClass(o)}">${o}</span></h3>`;metrics.innerHTML=`<div>森林寻宝正确率<b>${pct(f.accuracy)}</b></div><div>森林寻宝误选率<b>${pct(f.false_alarm_rate)}</b></div><div>持续注意下降<b>${pct(f.attention_decline)}</b></div><div>太空刹车抑制错误<b>${pct(s.inhibition_error_rate)}</b></div>`;taskTable.innerHTML=`<tr><td>森林寻宝</td><td><span class="pill ${riskClass(f.risk)}">${f.risk}</span></td><td>正确率 ${pct(f.accuracy)}，漏选率 ${pct(f.miss_rate)}，误选率 ${pct(f.false_alarm_rate)}，平均反应时 ${Math.round(f.mean_reaction_time)}ms</td></tr><tr><td>太空刹车</td><td><span class="pill ${riskClass(s.risk)}">${s.risk}</span></td><td>Go正确率 ${pct(s.go_accuracy)}，No-Go错误率 ${pct(s.inhibition_error_rate)}，平均反应时 ${Math.round(s.mean_go_reaction_time)}ms</td></tr>`;suggestion.innerHTML=suggest(o)}
+function suggest(r){if(r==='低风险')return '儿童在本次游戏化筛查中的表现整体较好，暂未发现明显注意力或冲动控制风险。建议继续保持规律作息、适度运动和良好的学习习惯。';if(r==='中风险')return '儿童在部分任务中表现出一定的注意不稳定、漏选、误选或冲动反应。建议家长和教师进一步观察其在课堂听讲、作业完成、规则遵守和等待轮流等场景中的表现。如类似情况持续出现，可考虑进行进一步专业评估。';return '儿童在本次筛查中表现出较明显的注意保持困难、抗干扰能力不足或冲动控制困难。建议结合家长访谈、教师观察及专业测评工具进一步评估，以明确其困难来源，并制定相应支持方案。'}
+function download(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();URL.revokeObjectURL(a.href)}
+function downloadJSON(){download('gba-result.json',JSON.stringify(state,null,2),'application/json')}
+function downloadCSV(){const cols=['trial_id','game','phase','stimulus_type','stimulus_label','response','correct','reaction_time_ms','timestamp'];const rows=[cols.join(',')].concat(state.trials.map(t=>cols.map(c=>'"'+String(t[c]??'').replaceAll('"','""')+'"').join(',')));download('gba-trials.csv','\ufeff'+rows.join('\n'),'text/csv;charset=utf-8')}
+</script>
+</body>
+</html>
