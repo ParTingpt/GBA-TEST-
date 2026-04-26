@@ -14,13 +14,13 @@ function all(){
 }
 app.post('/api/assessments',(req,res)=>{
  const b=req.body||{};
- if(!b.info||!b.results||!Array.isArray(b.trials))return res.status(400).json({error:'Invalid payload'});
- const r={id:'GBA-'+Date.now(),saved_at:new Date().toISOString(),info:b.info,results:b.results,trials:b.trials};
+ if(!b.info||!b.results)return res.status(400).json({error:'Invalid payload'});
+ const r={id:'GBA-'+Date.now(),type:b.type||'gba',saved_at:new Date().toISOString(),info:b.info,results:b.results,scores:b.scores||{},trials:b.trials||[],self_report_items:b.self_report_items||[],follow_status:'待查看'};
  fs.appendFileSync(file,JSON.stringify(r)+'\n','utf8');
  res.json({ok:true,id:r.id});
 });
 app.get('/api/assessments',(req,res)=>{
- res.json(all().map(x=>({id:x.id,saved_at:x.saved_at,name:x.info?.name,gender:x.info?.gender,age:x.info?.age,grade:x.info?.grade,overall:x.results?.overall,forest_risk:x.results?.forest?.risk,space_risk:x.results?.space?.risk,trial_count:x.trials?.length||0})).reverse());
+ res.json(all().map(x=>({id:x.id,type:x.type,saved_at:x.saved_at,name:x.info?.nickname||x.info?.name,gender:x.info?.gender,age:x.info?.age,grade:x.info?.grade,overall:x.results?.overall_risk||x.results?.overall,follow_status:x.follow_status||'待查看',trial_count:x.trials?.length||0,self_count:x.self_report_items?.length||0})).reverse());
 });
 app.get('/api/assessments/:id',(req,res)=>{
  const r=all().find(x=>x.id===req.params.id);
